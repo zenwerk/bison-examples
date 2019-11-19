@@ -6,6 +6,9 @@
 ### prec
 `%prec` を使った演算子優先順位の調整
 
+### prec-2
+`%prec` を使った演算子優先順位の調整 その２
+
 ### reduce-reduce
 reduce/reduceコンフリクトの解消
 
