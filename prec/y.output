@@ -1,8 +1,3 @@
-State 5 conflicts: 2 shift/reduce
-State 9 conflicts: 2 shift/reduce
-State 10 conflicts: 2 shift/reduce
-
-
 Grammar
 
     0 $accept: s $end
@@ -87,11 +82,8 @@ state 5
     3     | expr . '*' expr
     4     | '-' expr .
 
-    '-'  shift, and go to state 7
     '*'  shift, and go to state 8
 
-    '-'       [reduce using rule 4 (expr)]
-    '*'       [reduce using rule 4 (expr)]
     $default  reduce using rule 4 (expr)
 
 
@@ -128,11 +120,8 @@ state 9
     2     | expr '-' expr .
     3     | expr . '*' expr
 
-    '-'  shift, and go to state 7
     '*'  shift, and go to state 8
 
-    '-'       [reduce using rule 2 (expr)]
-    '*'       [reduce using rule 2 (expr)]
     $default  reduce using rule 2 (expr)
 
 
@@ -142,9 +131,4 @@ state 10
     3     | expr . '*' expr
     3     | expr '*' expr .
 
-    '-'  shift, and go to state 7
-    '*'  shift, and go to state 8
-
-    '-'       [reduce using rule 3 (expr)]
-    '*'       [reduce using rule 3 (expr)]
     $default  reduce using rule 3 (expr)

@@ -13,3 +13,7 @@ expr: expr '-' expr
     | NUMBER
     ;
 %%
+
+/*
+    %prec で単項マイナス演算子を優先度高くする
+*/
