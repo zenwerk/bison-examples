@@ -13,4 +13,4 @@ reduce/reduceコンフリクトの解消
 shift/reduceコンフリクトの解消
 
 ## 参考文献
-[https://www.amazon.co.jp/dp/4924998141 yacc/lex―プログラムジェネレータon UNIX]
+[yacc/lex―プログラムジェネレータon UNIX](https://www.amazon.co.jp/dp/4924998141)
