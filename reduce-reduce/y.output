@@ -1,0 +1,110 @@
+Rules never reduced
+
+    4 ab2: A B
+
+
+State 5 conflicts: 1 reduce/reduce
+
+
+Grammar
+
+    0 $accept: s $end
+
+    1 s: ab1 X
+    2  | ab2 X
+
+    3 ab1: A B
+
+    4 ab2: A B
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+A (258) 3 4
+B (259) 3 4
+X (260) 1 2
+
+
+Nonterminals, with rules where they appear
+
+$accept (6)
+    on left: 0
+s (7)
+    on left: 1 2, on right: 0
+ab1 (8)
+    on left: 3, on right: 1
+ab2 (9)
+    on left: 4, on right: 2
+
+
+state 0
+
+    0 $accept: . s $end
+
+    A  shift, and go to state 1
+
+    s    go to state 2
+    ab1  go to state 3
+    ab2  go to state 4
+
+
+state 1
+
+    3 ab1: A . B
+    4 ab2: A . B
+
+    B  shift, and go to state 5
+
+
+state 2
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 6
+
+
+state 3
+
+    1 s: ab1 . X
+
+    X  shift, and go to state 7
+
+
+state 4
+
+    2 s: ab2 . X
+
+    X  shift, and go to state 8
+
+
+state 5
+
+    3 ab1: A B .
+    4 ab2: A B .
+
+    X         reduce using rule 3 (ab1)
+    X         [reduce using rule 4 (ab2)]
+    $default  reduce using rule 3 (ab1)
+
+
+state 6
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+state 7
+
+    1 s: ab1 X .
+
+    $default  reduce using rule 1 (s)
+
+
+state 8
+
+    2 s: ab2 X .
+
+    $default  reduce using rule 2 (s)
