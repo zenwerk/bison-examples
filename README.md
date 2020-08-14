@@ -15,6 +15,9 @@ reduce/reduceコンフリクトの解消
 ### shift-reduce
 shift/reduceコンフリクトの解消
 
+### push_parser
+プッシュ型パーサーの作成例
+
 ## yacc の優先度・結合規則の決定ルール
 1. `%left`, `%right` に書かれたトークン, リテラル文字列の優先度・結合規則が yacc 側に記録される
 2. 各構文規則の右辺の最後のトークン or リテラル文字列の優先度・結合規則が、その構文規則の優先度・結合規則となる
@@ -29,4 +32,6 @@ shift/reduceコンフリクトの解消
         - 優先度 -> 先読みトークン = 規則 then `%left`, `%right` で結合, `%nonassoc` のときは `syntax error`
 
 ## 参考文献
-[yacc/lex―プログラムジェネレータon UNIX](https://www.amazon.co.jp/dp/4924998141)
+- [yacc/lex―プログラムジェネレータon UNIX](https://www.amazon.co.jp/dp/4924998141)
+- [How can flex return multiple terminals at one time](https://stackoverflow.com/a/42444111)
+    - プッシュパーサーの作成例

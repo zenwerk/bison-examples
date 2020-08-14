@@ -1,0 +1,6 @@
+!.gitkeep
+push_parser/src/y.tab.c
+push_parser/src/lex.yy.c
+push_parser/src/y.output
+push_parser/src/*.o
+push_parser/bin
