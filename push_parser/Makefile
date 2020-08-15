@@ -6,7 +6,7 @@ ifeq (Windows_NT,$(OS))
 TARGET:=$(TARGET).exe
 endif
 
-TESTS=$(wildcard examples/*.ckl)
+TESTS=$(wildcard examples/*.txt)
 
 all : $(TARGET)
 

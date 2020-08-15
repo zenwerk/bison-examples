@@ -2,12 +2,12 @@
 #include <stdlib.h>
 
 /* C言語部 */
-#define SEND(token, yylval) do {                              \
+#define SEND(token, yylval) do {                     \
   int status = yypush_parse(pstate, token, yylval);  \
-  if (status != YYPUSH_MORE) {                        \
-    yypstate_delete(pstate);                          \
-    return status;                                    \
-  }                                                   \
+  if (status != YYPUSH_MORE) {                       \
+    yypstate_delete(pstate);                         \
+    return status;                                   \
+  }                                                  \
 } while (0)
 
 %}
