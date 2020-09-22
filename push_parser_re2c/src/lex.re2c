@@ -70,7 +70,7 @@ yylex(input_t *in, yypstate *pstate)
         re2c:define:YYMARKER = in->marker;
         re2c:define:YYLIMIT  = in->limit;
         re2c:define:YYFILL   = "if (fill(in, @@) != 0) return -1;";
-        re2c:yyfill:enable = 1;
+        re2c:yyfill:enable   = 1;
 
         D = [0-9];
         N = [1-9];
@@ -96,7 +96,7 @@ yylex(input_t *in, yypstate *pstate)
             // Send the parser the end token (0)
             int status = yypush_parse(pstate, 0, NULL);
             // Free the pstate
-            yypstate_delete(pstate);
+            // yypstate_delete(pstate);
             // return the parser status; 0 is success
             return status;
         }
