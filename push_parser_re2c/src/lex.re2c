@@ -54,80 +54,80 @@ fill(input_t *in, size_t need)
 }
 
 static int
-yylex(input_t *in)
+yylex(input_t *in, yypstate *pstate)
 {
     char *yytext;
     size_t size;
-
-    yypstate* pstate = yypstate_new();
     YYSTYPE yylval;
 
-loop:
-    in->token = in->cursor;
-/*!re2c
-    re2c:api:style = free-form;
-    re2c:define:YYCTYPE  = char;
-    re2c:define:YYCURSOR = in->cursor;
-    re2c:define:YYMARKER = in->marker;
-    re2c:define:YYLIMIT  = in->limit;
-    re2c:define:YYFILL   = "if (fill(in, @@) != 0) return -1;";
-    re2c:yyfill:enable = 1;
+    while(1)
+    {
+        in->token = in->cursor;
+    /*!re2c
+        re2c:api:style = free-form;
+        re2c:define:YYCTYPE  = char;
+        re2c:define:YYCURSOR = in->cursor;
+        re2c:define:YYMARKER = in->marker;
+        re2c:define:YYLIMIT  = in->limit;
+        re2c:define:YYFILL   = "if (fill(in, @@) != 0) return -1;";
+        re2c:yyfill:enable = 1;
 
-    D = [0-9];
-    N = [1-9];
-    O = [0-7];
-    H = [0-9a-fA-F];
+        D = [0-9];
+        N = [1-9];
+        O = [0-7];
+        H = [0-9a-fA-F];
 
-    *      { return -1; }
-    // NULL文字が来たときの処理
-    [\x00] { return (YYMAXFILL == in->limit - in->token) ? 1 : -1; }
-    [ \t]  { goto loop; }
+        *      { return -1; }
+        // NULL文字が来たときの処理
+        [\x00] { return (YYMAXFILL == in->limit - in->token) ? 1 : -1; }
+        [ \t]  { continue; }
 
-    "+"  { PUSH_TOKEN(ADDOP, NULL); goto loop; }
-    "-"  { PUSH_TOKEN(SUBOP, NULL); goto loop; }
-    "*"  { PUSH_TOKEN(MULOP, NULL); goto loop; }
-    "/"  { PUSH_TOKEN(DIVOP, NULL); goto loop; }
-    "**" { PUSH_TOKEN(POWOP, NULL); goto loop; }
-    "!"  { PUSH_TOKEN(FACTOP, NULL); goto loop; }
-    "("  { PUSH_TOKEN(LP, NULL); goto loop; }
-    ")"  { PUSH_TOKEN(RP, NULL); goto loop; }
-    "\n" { PUSH_TOKEN(NL, NULL); goto loop; }
-    "end" {
-        // Obligatory EOF rule
-        // Send the parser the end token (0)
-        int status = yypush_parse(pstate, 0, NULL);
-        // Free the pstate
-        yypstate_delete(pstate);
-        // return the parser status; 0 is success
-        return status;
-    }
+        "+"  { PUSH_TOKEN(ADDOP, NULL); continue; }
+        "-"  { PUSH_TOKEN(SUBOP, NULL); continue; }
+        "*"  { PUSH_TOKEN(MULOP, NULL); continue; }
+        "/"  { PUSH_TOKEN(DIVOP, NULL); continue; }
+        "**" { PUSH_TOKEN(POWOP, NULL); continue; }
+        "!"  { PUSH_TOKEN(FACTOP, NULL); continue; }
+        "("  { PUSH_TOKEN(LP, NULL); continue; }
+        ")"  { PUSH_TOKEN(RP, NULL); continue; }
+        "\n" { PUSH_TOKEN(NL, NULL); continue; }
+        "end" {
+            // Obligatory EOF rule
+            // Send the parser the end token (0)
+            int status = yypush_parse(pstate, 0, NULL);
+            // Free the pstate
+            yypstate_delete(pstate);
+            // return the parser status; 0 is success
+            return status;
+        }
 
-    N{1}D* {
-        size = in->cursor - in->token;
-        yytext = (char *)calloc(size, sizeof(char));
-        memcpy(yytext, in->token, size);
-        yylval.intval = atoi(yytext);
-        free(yytext);
-        PUSH_TOKEN(NUMBER, &yylval);
-        goto loop;
+        N{1}D* {
+            size = in->cursor - in->token;
+            yytext = (char *)calloc(size, sizeof(char));
+            memcpy(yytext, in->token, size);
+            yylval.intval = atoi(yytext);
+            free(yytext);
+            PUSH_TOKEN(NUMBER, &yylval);
+            continue;
+        }
+        "0"O* {
+            size = in->cursor - in->token;
+            yytext = (char *)calloc(size, sizeof(char));
+            memcpy(yytext, in->token, size);
+            yylval.intval = (int)strtol(yytext, NULL, 8);
+            free(yytext);
+            PUSH_TOKEN(NUMBER, &yylval);
+            continue;
+        }
+        "0"[xX]H+ {
+            size = in->cursor - in->token;
+            yytext = (char *)calloc(size, sizeof(char));
+            memcpy(yytext, in->token, size);
+            yylval.intval = (int)strtol(yytext, NULL, 16);
+            free(yytext);
+            PUSH_TOKEN(NUMBER, &yylval);
+            continue;
+        }
+    */
     }
-    "0"O* {
-        size = in->cursor - in->token;
-        yytext = (char *)calloc(size, sizeof(char));
-        memcpy(yytext, in->token, size);
-        yylval.intval = (int)strtol(yytext, NULL, 8);
-        free(yytext);
-        PUSH_TOKEN(NUMBER, &yylval);
-        goto loop;
-    }
-    "0"[xX]H+ {
-        size = in->cursor - in->token;
-        yytext = (char *)calloc(size, sizeof(char));
-        memcpy(yytext, in->token, size);
-        yylval.intval = (int)strtol(yytext, NULL, 16);
-        free(yytext);
-        PUSH_TOKEN(NUMBER, &yylval);
-        goto loop;
-    }
-*/
 }

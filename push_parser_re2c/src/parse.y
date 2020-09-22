@@ -137,13 +137,31 @@ init(input_t *in, FILE *file)
 }
 
 static int
+interpret()
+{
+  int n;
+  input_t in;
+  init(&in, stdin);
+
+  yypstate *ps = yypstate_new();
+  // do {
+  //   n = yypush_parse(ps, yylex(&in), NULL);
+  // } while (n == YYPUSH_MORE);
+  n = yylex(&in, ps);
+  yypstate_delete(ps);
+  return n;
+}
+
+static int
 syntax_check(FILE *f, const char *fname)
 {
   int n;
   input_t in;
   init(&in, f);
 
-  n = yylex(&in);
+  yypstate *ps = yypstate_new();
+  n = yylex(&in, ps);
+  yypstate_delete(ps);
 
   if (n == 0) {
     printf("%s: Syntax OK\n", fname);
@@ -175,7 +193,7 @@ main(int argc, const char **argv)
 {
   int i, n = 0;
   if (argc == 1) {
-    n = syntax_check(stdin, "stdin");
+    n = interpret();
   }
   else {
     for (i=1; i<argc; i++) {
