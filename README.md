@@ -1,5 +1,8 @@
 # bison サンプル
 
+### calc
+最小限の電卓サンプル
+
 ### left-right
 `%left`, `%right` を使った shift/reduceコンフリクトの解消
 
